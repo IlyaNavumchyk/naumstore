@@ -1,0 +1,61 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/naumshop
+    username: postgres
+    password: root
+  hikari:
+    maximum-pool-size: 10
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-description: Flyway Scripts
+    locations: classpath:/migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    default-schema: shop
+    out-of-order: true
+    ignore-migration-patterns: '*:ignored'
+
+server:
+  port: 8080
+
+---
+
+#spring:
+#  jpa:
+#    properties:
+#      # application properties
+#      javax.persistence.validation.mode: none
+#      hibernate.show_sql: true
+#      hibernate.default: shop
+#      hibernate.current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+#
+#      hibernate.dialect: org.hibernate.dialect.PostgreSQL10Dialect
+#      hibernate.connection.characterEncoding: utf8mb4
+#      hibernate.connection.CharSet: utf8mb4
+#      hibernate.connection.useUnicode: true
+#
+#      # Second level cache turn-on
+#      hibernate.cache.use_second_level_cache: true
+#      hibernate.javax.cache.provider: net.sf.ehcache.hibernate.EhCacheRegionFactory
+#      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.internal.EhCacheRegionFactory
+#      hibernate.cache.ehcache.missing_cache_strategy : create
+#
+#      # Third level cache turn-on
+#      hibernate.cache.use_query_cache: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, env
+  endpoint:
+    health:
+      show-details: always
+
+---
+
+jwt:
+  secret: naumshop*naumshop#naumshop_0123
+  expiration: 600
