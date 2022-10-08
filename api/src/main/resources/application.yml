@@ -59,3 +59,8 @@ management:
 jwt:
   secret: naumshop*naumshop#naumshop_0123
   expiration: 600
+
+---
+
+default-system-time-zone:
+  timezone: UTC
