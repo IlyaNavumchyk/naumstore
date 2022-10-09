@@ -62,5 +62,5 @@ jwt:
 
 ---
 
-default-system-time-zone:
+default-system-timezone:
   timezone: UTC

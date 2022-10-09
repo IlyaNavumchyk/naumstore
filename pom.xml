@@ -21,16 +21,18 @@
     </modules>
 
     <properties>
-            <maven.compiler.source>11</maven.compiler.source>
-            <maven.compiler.target>11</maven.compiler.target>
-            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-            <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-            <postgresql.version>42.5.0</postgresql.version>
-            <hikaricp.version>5.0.1</hikaricp.version>
-            <log4j.version>1.2.17</log4j.version>
-            <!--        <jwt.version>0.11.5</jwt.version>-->
-            <jwt.version>0.9.1</jwt.version>
-            <flyway.version>9.3.0</flyway.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
+        <postgresql.version>42.5.0</postgresql.version>
+        <hikaricp.version>5.0.1</hikaricp.version>
+        <log4j.version>1.2.17</log4j.version>
+        <!--        <jwt.version>0.11.5</jwt.version>-->
+        <jwt.version>0.9.1</jwt.version>
+        <flyway.version>9.3.0</flyway.version>
+        <mapstruct.version>1.5.3.FINAL</mapstruct.version>
     </properties>
 
     <build>
@@ -38,7 +40,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.source}</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
