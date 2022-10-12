@@ -1,21 +1,26 @@
 package com.naumshop.controller;
 
 import com.naumshop.domain.user.User;
-import com.naumshop.dto.user.UserDTOForCreate;
 import com.naumshop.dto.UserMapper;
+import com.naumshop.dto.user.UserDTOForCreate;
+import com.naumshop.dto.user.UserDTOForUpdate;
 import com.naumshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("users")
 public class UserController {
@@ -36,15 +41,18 @@ public class UserController {
         );
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Object> test() {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findById(@PathVariable("id") String id) {
+
+        Long userId = Long.parseLong(id);
 
         return new ResponseEntity<>(
-                Collections.singletonMap("test", userService.test()),
+                Collections.singletonMap(USERS, userService.findById(userId)),
                 HttpStatus.OK
         );
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody UserDTOForCreate userDTO) {
 
@@ -53,7 +61,22 @@ public class UserController {
         userService.create(user);
 
         return new ResponseEntity<>(
-                Collections.singletonMap(USER, mapper.mapForCreate(user)),
+                Collections.singletonMap(USER, userService.findById(user.getId())),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody UserDTOForUpdate userDTO) {
+
+        User user = userService.findById(userDTO.getId());
+
+        mapper.mapForUpdate(userDTO, user);
+
+        userService.update(user);
+
+        return new ResponseEntity<>(
+                Collections.singletonMap(USER, user),
                 HttpStatus.OK
         );
     }

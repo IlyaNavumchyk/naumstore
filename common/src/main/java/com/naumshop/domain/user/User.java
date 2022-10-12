@@ -1,27 +1,36 @@
 package com.naumshop.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.naumshop.domain.role.Role;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Data
+@EqualsAndHashCode(exclude = {"roles"})
+@ToString(exclude = {"roles"})
 public class User {
 
     @Id
@@ -63,6 +72,11 @@ public class User {
     @Column(name = "modification_date")
     //@JsonIgnore
     private LocalDateTime modificationDate;
+
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("users")
+    @OrderBy("id")
+    private Set<Role> roles;
 
     @PrePersist
     public void prePersist() {

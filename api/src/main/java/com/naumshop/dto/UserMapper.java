@@ -3,44 +3,38 @@ package com.naumshop.dto;
 import com.naumshop.domain.user.User;
 import com.naumshop.dto.user.UserDTOForCreate;
 import com.naumshop.dto.user.UserDTOForUpdate;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Mapper
+@Mapper()
 public interface UserMapper {
-
-    @Mappings(value = {
-            @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
-    })
+    @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User mapForCreate(UserDTOForCreate userDTO);
 
-    @Mappings(value = {
-            @Mapping(target = "birth", expression = "java(parseFromLocalDate(user.getBirth()))")
-    })
+    @Mapping(target = "birth", expression = "java(parseFromLocalDate(user.getBirth()))")
     UserDTOForCreate mapForCreate(User user);
 
-    User mapForUpdate(UserDTOForUpdate userDTO);
+    @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mapForUpdate(UserDTOForUpdate userDTO, @MappingTarget User user);
 
-    UserDTOForUpdate mapForUpdate(User user);
+    @Mapping(target = "birth", expression = "java(parseFromLocalDate(user.getBirth()))")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mapForUpdate(User user, @MappingTarget UserDTOForUpdate userDTO);
 
     default LocalDate parseToLocalDate(String birth) {
-
-        if (birth == null) {
-            return null;
-        }
 
         return LocalDate.parse(birth, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     default String parseFromLocalDate(LocalDate birth) {
-
-        if (birth == null) {
-            return null;
-        }
 
         // yyyy-MM-dd
         String[] args = birth.toString().split("-");
