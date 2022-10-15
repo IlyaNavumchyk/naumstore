@@ -1,14 +1,13 @@
 package com.naumshop.controller;
 
 import com.naumshop.domain.user.User;
-import com.naumshop.dto.UserMapper;
-import com.naumshop.dto.user.UserDTOForCreate;
-import com.naumshop.dto.user.UserDTOForUpdate;
+import com.naumshop.controller.converters.UserMapper;
+import com.naumshop.controller.dto.user.UserDTOForCreate;
+import com.naumshop.controller.dto.user.UserDTOForUpdate;
 import com.naumshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-public class PersistenceProvidersConfiguration {
+public class PersistenceProvidersConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {

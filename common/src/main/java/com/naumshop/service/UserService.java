@@ -40,7 +40,6 @@ public class UserService {
         roleUser.getUsers().add(user);
         roleAnon.getUsers().add(user);
 
-
         userRepository.save(user);
     }
 

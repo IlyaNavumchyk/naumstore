@@ -25,6 +25,7 @@ import java.util.Set;
 @Table(name = "categories")
 @Data
 @JsonIgnoreProperties("products")
+@EqualsAndHashCode(exclude = {"products"})
 public class Category {
 
     @Id

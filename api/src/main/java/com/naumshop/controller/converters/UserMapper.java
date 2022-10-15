@@ -1,8 +1,8 @@
-package com.naumshop.dto;
+package com.naumshop.controller.converters;
 
+import com.naumshop.controller.dto.user.UserDTOForCreate;
+import com.naumshop.controller.dto.user.UserDTOForUpdate;
 import com.naumshop.domain.user.User;
-import com.naumshop.dto.user.UserDTOForCreate;
-import com.naumshop.dto.user.UserDTOForUpdate;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

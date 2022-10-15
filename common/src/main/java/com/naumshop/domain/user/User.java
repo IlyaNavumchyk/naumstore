@@ -57,13 +57,13 @@ public class User {
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private Gender gender = Gender.NOT_SELECTED;
+    private Gender gender;
 
     @Embedded
     private Address address;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
     @Column(name = "creation_date")
     //@JsonIgnore
@@ -80,7 +80,11 @@ public class User {
 
     @PrePersist
     public void prePersist() {
+        isDeleted = false;
         creationDate = LocalDateTime.now();
+        if (gender == null) {
+            gender = Gender.NOT_SELECTED;
+        }
     }
 
     @PreUpdate

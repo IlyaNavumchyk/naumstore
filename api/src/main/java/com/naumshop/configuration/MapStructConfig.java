@@ -1,6 +1,6 @@
 package com.naumshop.configuration;
 
-import com.naumshop.dto.UserMapper;
+import com.naumshop.controller.converters.UserMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

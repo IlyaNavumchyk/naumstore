@@ -17,7 +17,7 @@ import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping
 public class ShopController {
 
     private static final int DEFAULT_PAGE_NUMBER = 0;
@@ -27,17 +27,17 @@ public class ShopController {
     private final ShopService shopService;
 
     @GetMapping
-    public ResponseEntity<Object> findAll() {
+    public ResponseEntity<Object> findAllCategories() {
 
         return new ResponseEntity<>(
-                Collections.singletonMap("result", shopService.findAll()),
+                Collections.singletonMap("result", shopService.findAllCategories()),
                 HttpStatus.OK
         );
     }
 
     @GetMapping("/{category}")
-    public ResponseEntity<Object> findByCategory(@PathVariable("category") String categoryName,
-                                                 @ModelAttribute PageSettings pageSettings) {
+    public ResponseEntity<Object> findAllProductsByCategoryName(@PathVariable("category") String categoryName,
+                                                                @ModelAttribute PageSettings pageSettings) {
 
         ProductCategories productCategory;
         int pageNumber;
@@ -49,22 +49,27 @@ public class ShopController {
             throw new NoSuchEntityException(String.format("This category \"%s\" was not found", categoryName));
         }
 
-        String temp = pageSettings.getPage();
-        if (temp != null) {
-            pageNumber = Integer.parseInt(temp);
-        } else {
+        try {
+            pageNumber = Integer.parseInt(pageSettings.getPage());
+            pageNumber--;
+            if (pageNumber < 0) {
+                throw new IllegalArgumentException("Page index must not be less than one");
+            }
+        } catch (Exception e) {
             pageNumber = DEFAULT_PAGE_NUMBER;
         }
 
-        temp = pageSettings.getSize();
-        if (temp != null) {
-            pageSize = Integer.parseInt(temp);
-        } else {
+        try {
+            pageSize = Integer.parseInt(pageSettings.getSize());
+            if (pageSize < 1) {
+                throw new IllegalArgumentException("Page size must not be less than one");
+            }
+        } catch (Exception e) {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        return new ResponseEntity<>(
-                Collections.singletonMap("result", shopService.findByCategory(productCategory, pageNumber, pageSize)),
+        return new ResponseEntity<>(Collections.singletonMap("result",
+                shopService.findAllProductsByCategoryName(productCategory, pageNumber, pageSize)),
                 HttpStatus.OK
         );
     }

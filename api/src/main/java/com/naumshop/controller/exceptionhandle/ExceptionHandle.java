@@ -1,6 +1,7 @@
 package com.naumshop.controller.exceptionhandle;
 
 import com.naumshop.exception.NoSuchEntityException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,12 +34,24 @@ public class ExceptionHandle {
         );
     }
 
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleDataIntegrityViolationException(Exception e) {
+
+        ErrorContainer errorContainer = composeErrorContainer(e, 4);
+        errorContainer.setMessage("This login or email already exist");
+
+        return new ResponseEntity<>(
+                Collections.singletonMap(ERROR, errorContainer),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleException(Exception e) {
 
         return new ResponseEntity<>(
-                Collections.singletonMap(ERROR, composeErrorContainer(e, 1)),
-                HttpStatus.BAD_REQUEST
+                Collections.singletonMap(ERROR, composeErrorContainer(e, 911)),
+                HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 

@@ -2,6 +2,7 @@ package com.naumshop.repository;
 
 import com.naumshop.domain.role.Role;
 import com.naumshop.domain.role.UserRoles;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -3,6 +3,7 @@ package com.naumshop.domain.role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.naumshop.domain.user.User;
 import lombok.Data;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,6 +25,7 @@ import java.util.Set;
 @Table(name = "roles")
 @Data
 @JsonIgnoreProperties("users")
+@Cacheable("roles")
 public class Role {
 
     @Id
@@ -44,4 +48,14 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
+
+    @PrePersist
+    public void prePersist() {
+        creationDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modificationDate = LocalDateTime.now();
+    }
 }

@@ -1,11 +1,7 @@
-package com.naumshop.dto.user;
+package com.naumshop.controller.dto.user;
 
 import com.naumshop.domain.user.Gender;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class UserDTOForCreate {
@@ -25,6 +21,4 @@ public class UserDTOForCreate {
     private AddressDTO address;
 
     private Boolean isDeleted;
-
-    private LocalDateTime creationDate;
 }

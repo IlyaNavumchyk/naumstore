@@ -1,4 +1,4 @@
-package com.naumshop.dto.user;
+package com.naumshop.controller.dto.user;
 
 import lombok.Data;
 
