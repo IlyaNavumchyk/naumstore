@@ -1,5 +1,6 @@
 package com.naumshop.controller;
 
+import com.naumshop.controller.converters.ProductMapper;
 import com.naumshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,12 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
+import static com.naumshop.controller.DefaultResponseTag.PRODUCT;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("products")
 public class ProductController {
 
     private final ProductService productService;
+
+    //private final ProductMapper mapper;
 
 
     @GetMapping("/{id}")
@@ -25,8 +30,22 @@ public class ProductController {
         Long productId = Long.parseLong(id);
 
         return new ResponseEntity<>(
-                Collections.singletonMap("product", productService.findById(productId)),
+                Collections.singletonMap(PRODUCT, productService.findById(productId)),
                 HttpStatus.OK
         );
     }
+
+    /*@PostMapping
+    public ResponseEntity<Object> add(ProductDTOForCreate productDTO) {
+
+        //mapper
+        Product product = productMapper.mapForCreate(productDTO);
+
+        productService.create(product);
+
+        return new ResponseEntity<>(
+                Collections.singletonMap(PRODUCT, product),
+                HttpStatus.OK
+        );
+    }*/
 }

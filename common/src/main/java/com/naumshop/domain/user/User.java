@@ -86,10 +86,4 @@ public class User {
             gender = Gender.NOT_SELECTED;
         }
     }
-
-    @PreUpdate
-    public void preUpdate() {
-        modificationDate = LocalDateTime.now();
-    }
-
 }

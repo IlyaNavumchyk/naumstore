@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.naumshop.domain.product.Product;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +24,6 @@ import java.util.Set;
 @Table(name = "categories")
 @Data
 @JsonIgnoreProperties("products")
-@EqualsAndHashCode(exclude = {"products"})
 public class Category {
 
     @Id
@@ -48,5 +46,4 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private Set<Product> products;
-
 }

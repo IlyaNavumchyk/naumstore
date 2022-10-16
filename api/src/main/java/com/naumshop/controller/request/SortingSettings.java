@@ -5,10 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PageSettings {
+public class SortingSettings {
 
-    private String page;
+    private String sortField;
 
-    private String size;
-
+    private String sortDirection;
 }

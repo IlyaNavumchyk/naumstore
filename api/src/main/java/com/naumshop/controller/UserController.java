@@ -1,9 +1,9 @@
 package com.naumshop.controller;
 
-import com.naumshop.domain.user.User;
 import com.naumshop.controller.converters.UserMapper;
 import com.naumshop.controller.dto.user.UserDTOForCreate;
 import com.naumshop.controller.dto.user.UserDTOForUpdate;
+import com.naumshop.domain.user.User;
 import com.naumshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
+import static com.naumshop.controller.DefaultResponseTag.USER;
+import static com.naumshop.controller.DefaultResponseTag.USERS;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("users")
 public class UserController {
-
-    private static final String USERS = "users";
-    private static final String USER = "user";
 
     private final UserService userService;
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -45,6 +46,8 @@ public class UserService {
 
     @Transactional
     public void update(User user) {
+
+        user.setModificationDate(LocalDateTime.now());
 
         userRepository.save(user);
     }

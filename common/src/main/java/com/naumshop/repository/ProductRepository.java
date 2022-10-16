@@ -9,17 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-import java.util.Set;
-
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByCategoryAndIsDeleted(Category category, Boolean bool, Pageable pageable);
 
-    Optional<Product> findByProductNameLikeIgnoreCase(String name);
-
-    @Query(value = "select * from shop.products where product_name ilike '%'||:name||'%' or " +
-            "description ilike '%'||:name||'%'", nativeQuery = true)
-    Optional<Set<Product>> searchByProductNameOrDescription(@Param("name") String name);
+    @Query(value = "select * from shop.products " +
+            "where (product_name ilike '%'||:name||'%' or description ilike '%'||:name||'%') " +
+            "and is_deleted = false", nativeQuery = true)
+    Page<Product> searchByProductNameOrDescription(@Param("name") String name, Pageable pageable);
 }

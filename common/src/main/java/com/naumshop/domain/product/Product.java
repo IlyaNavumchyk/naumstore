@@ -1,7 +1,6 @@
 package com.naumshop.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.naumshop.domain.category.Category;
 import lombok.Data;
 
@@ -29,13 +28,13 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name")
-    private String productName;
+    private String name;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 
     @Column(name = "count")
     private Integer count;
@@ -52,7 +51,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     @JsonBackReference
-    @JsonIgnoreProperties("products")
     private Category category;
 
     @PrePersist

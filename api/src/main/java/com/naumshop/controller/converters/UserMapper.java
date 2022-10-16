@@ -12,7 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Mapper()
+@Mapper
 public interface UserMapper {
     @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

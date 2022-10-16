@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,20 +18,6 @@ public class ProductService {
 
         return productRepository.findById(id).orElseThrow(() ->
                 new NoSuchEntityException(String.format("The product with id \"%s\" was not found", id))
-        );
-    }
-
-    public Product findByProductName(String name) {
-
-        return productRepository.findByProductNameLikeIgnoreCase(name).orElseThrow(() ->
-                new NoSuchEntityException(String.format("The product with this name \"%s\" was not found", name))
-        );
-    }
-
-    public Set<Product> searchByProductNameOrDescription(String name) {
-
-        return productRepository.searchByProductNameOrDescription(name).orElseThrow(() ->
-                new NoSuchEntityException(String.format("The product with this name \"%s\" was not found", name))
         );
     }
 

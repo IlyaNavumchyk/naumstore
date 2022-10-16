@@ -22,7 +22,7 @@ public class TestController {
     public ResponseEntity<Object> test(@RequestParam String test) {
 
         return new ResponseEntity<>(
-                Collections.singletonMap("test", productService.searchByProductNameOrDescription(test)),
+                Collections.singletonMap("test", null),
                 HttpStatus.OK
         );
     }
