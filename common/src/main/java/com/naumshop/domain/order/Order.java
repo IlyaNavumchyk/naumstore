@@ -1,6 +1,6 @@
-package com.naumshop.domain.role;
+package com.naumshop.domain.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.naumshop.domain.user.User;
 import lombok.Data;
 
@@ -12,28 +12,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "orders")
 @Data
-@JsonIgnoreProperties("users")
-public class Role {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
-    @Column(name = "role_name")
+    @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private UserRoles roleName;
+    private OrderStatus status;
+
+    @Column(name = "total_sale")
+    private Integer totalSale;
+
+    @Column(name = "total_price")
+    private Double totalPrice;
 
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
@@ -41,19 +44,21 @@ public class Role {
     @Column(name = "modification_date")
     private LocalDateTime modificationDate;
 
-    @ManyToMany
-    @JoinTable(name = "l_user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
     @PrePersist
     public void prePersist() {
+
+        status = OrderStatus.NEW;
         creationDate = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
+
         modificationDate = LocalDateTime.now();
     }
 }

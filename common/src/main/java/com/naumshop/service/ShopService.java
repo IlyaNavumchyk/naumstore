@@ -7,6 +7,7 @@ import com.naumshop.exception.NoSuchEntityException;
 import com.naumshop.repository.CategoryRepository;
 import com.naumshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class ShopService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
+    @Cacheable("categories")
     public List<Category> findAllCategories() {
 
         return categoryRepository.findAll();

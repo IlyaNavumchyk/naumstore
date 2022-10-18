@@ -7,8 +7,6 @@ import com.naumshop.domain.product.Product;
 import com.naumshop.exception.NoSuchEntityException;
 import com.naumshop.service.ShopService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,8 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
-import java.util.List;
 
+import static com.naumshop.controller.DefaultResponseTag.PRODUCTS;
 import static com.naumshop.controller.DefaultResponseTag.RESULT;
 
 @RestController
@@ -60,7 +58,7 @@ public class ShopController {
 
         Pageable pageable = getPageable(pageSettings, sortingSettings);
 
-        return new ResponseEntity<>(Collections.singletonMap(RESULT,
+        return new ResponseEntity<>(Collections.singletonMap(PRODUCTS,
                 shopService.findAllProductsByCategoryName(productCategory, pageable)),
                 HttpStatus.OK
         );
@@ -74,7 +72,7 @@ public class ShopController {
         Pageable pageable = getPageable(pageSettings, sortingSettings);
 
         return new ResponseEntity<>(
-                Collections.singletonMap(RESULT, shopService.searchByProductNameOrDescription(productName, pageable)),
+                Collections.singletonMap(PRODUCTS, shopService.searchByProductNameOrDescription(productName, pageable)),
                 HttpStatus.OK
         );
     }
@@ -107,7 +105,7 @@ public class ShopController {
         }
 
         sortField = sortingSettings.getSortField();
-        if (sortField == null) {
+        if (!checkField(sortField)) {
             sortField = DEFAULT_SORT_FIELD;
         }
 
@@ -118,5 +116,15 @@ public class ShopController {
         }
 
         return PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
+    }
+
+    private boolean checkField(String fieldName) {
+
+        try {
+            Product.class.getDeclaredField(fieldName);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

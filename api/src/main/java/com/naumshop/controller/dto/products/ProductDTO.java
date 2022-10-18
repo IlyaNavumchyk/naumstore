@@ -3,11 +3,9 @@ package com.naumshop.controller.dto.products;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
-public class ProductDTOForCreate {
+public class ProductDTO {
 
     private String name;
 

@@ -1,7 +1,8 @@
 package com.naumshop.domain.product;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.naumshop.domain.category.Category;
+import com.naumshop.domain.user.User;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -10,16 +11,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
 @Data
+@JsonIgnoreProperties("users")
 public class Product {
 
     @Id
@@ -50,8 +54,14 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonBackReference
     private Category category;
+
+    @ManyToMany
+    @JoinTable(name = "l_user_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnoreProperties("favourites")
+    private Set<User> users;
 
     @PrePersist
     public void prePersist() {

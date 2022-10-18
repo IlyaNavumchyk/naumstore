@@ -1,7 +1,9 @@
 package com.naumshop.service;
 
+import com.naumshop.domain.category.Category;
 import com.naumshop.domain.product.Product;
 import com.naumshop.exception.NoSuchEntityException;
+import com.naumshop.repository.CategoryRepository;
 import com.naumshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final CategoryRepository categoryRepository;
+
     public Product findById(Long id) {
 
         return productRepository.findById(id).orElseThrow(() ->
@@ -22,7 +26,12 @@ public class ProductService {
     }
 
     @Transactional
-    public void create(Product product) {
+    public void create(Product product, int productCategoryId) {
+
+        Category category = categoryRepository.findById(productCategoryId).orElseThrow(() ->
+                new NoSuchEntityException(String.format("Category with this id \"%d\" not found", productCategoryId)));
+
+        product.setCategory(category);
 
         productRepository.save(product);
     }
@@ -32,14 +41,4 @@ public class ProductService {
 
         productRepository.save(product);
     }
-
-    @Transactional
-    public void delete(Product product) {
-
-        product.setIsDeleted(true);
-
-        productRepository.save(product);
-    }
-
-
 }

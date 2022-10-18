@@ -2,10 +2,12 @@ package com.naumshop.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.naumshop.domain.order.Order;
+import com.naumshop.domain.product.Product;
 import com.naumshop.domain.role.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -29,8 +31,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
-@EqualsAndHashCode(exclude = {"roles"})
-@ToString(exclude = {"roles"})
+@EqualsAndHashCode(exclude = {"roles", "orders", "favourites"})
 public class User {
 
     @Id
@@ -66,17 +67,22 @@ public class User {
     private Boolean isDeleted;
 
     @Column(name = "creation_date")
-    //@JsonIgnore
     private LocalDateTime creationDate;
 
     @Column(name = "modification_date")
-    //@JsonIgnore
     private LocalDateTime modificationDate;
 
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("users")
-    @OrderBy("id")
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Order> orders;
+
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("users")
+    private Set<Product> favourites;
 
     @PrePersist
     public void prePersist() {
@@ -85,5 +91,11 @@ public class User {
         if (gender == null) {
             gender = Gender.NOT_SELECTED;
         }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+
+        modificationDate = LocalDateTime.now();
     }
 }

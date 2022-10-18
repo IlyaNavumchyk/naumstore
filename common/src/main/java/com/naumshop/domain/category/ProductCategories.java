@@ -1,10 +1,5 @@
 package com.naumshop.domain.category;
 
-/**
- Here are the categories of goods in the store.
- You can't change the order of the categories.
- Adding new ones is allowed.
- */
 public enum ProductCategories {
 
     SMARTPHONES_AND_GADGETS,

@@ -1,8 +1,8 @@
 package com.naumshop.controller;
 
 import com.naumshop.controller.converters.UserMapper;
-import com.naumshop.controller.dto.user.UserDTOForCreate;
-import com.naumshop.controller.dto.user.UserDTOForUpdate;
+import com.naumshop.controller.dto.user.UserDTO;
+import com.naumshop.controller.request.DeleteRequest;
 import com.naumshop.domain.user.User;
 import com.naumshop.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,7 +54,7 @@ public class UserController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody UserDTOForCreate userDTO) {
+    public ResponseEntity<Object> create(@RequestBody UserDTO userDTO) {
 
         User user = mapper.mapForCreate(userDTO);
 
@@ -65,12 +66,33 @@ public class UserController {
         );
     }
 
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody UserDTOForUpdate userDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") String id,
+                                         @RequestBody UserDTO userDTO) {
 
-        User user = userService.findById(userDTO.getId());
+        long userId = Long.parseLong(id);
+
+        User user = userService.findById(userId);
 
         mapper.mapForUpdate(userDTO, user);
+
+        userService.update(user);
+
+        return new ResponseEntity<>(
+                Collections.singletonMap(USER, user),
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") String id,
+                                         @RequestBody DeleteRequest isDel) {
+
+        long userId = Long.parseLong(id);
+        Boolean isDeleted = isDel.getIsDeleted();
+
+        User user = userService.findById(userId);
+        user.setIsDeleted(isDeleted);
 
         userService.update(user);
 

@@ -4,7 +4,7 @@ import com.naumshop.domain.user.Gender;
 import lombok.Data;
 
 @Data
-public class UserDTOForCreate {
+public class UserDTO {
 
     private CredentialsDTO credentials;
 
@@ -19,6 +19,4 @@ public class UserDTOForCreate {
     private Gender gender;
 
     private AddressDTO address;
-
-    private Boolean isDeleted;
 }

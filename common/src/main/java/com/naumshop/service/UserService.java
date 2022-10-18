@@ -3,13 +3,13 @@ package com.naumshop.service;
 import com.naumshop.domain.role.Role;
 import com.naumshop.domain.role.UserRoles;
 import com.naumshop.domain.user.User;
+import com.naumshop.exception.NoSuchEntityException;
 import com.naumshop.repository.RoleRepository;
 import com.naumshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -28,26 +28,23 @@ public class UserService {
 
     public User findById(Long id) {
 
-        return userRepository.findById(id).orElseThrow(NullPointerException::new);
+        return userRepository.findById(id).orElseThrow(() ->
+                new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
     }
 
     @Transactional
     public void create(User user) {
 
         Role roleUser = roleRepository.findByRoleName(UserRoles.ROLE_USER);
-        Role roleAnon = roleRepository.findByRoleName(UserRoles.ROLE_ANONYMOUS);
 
-        user.setRoles(Set.of(roleUser, roleAnon));
+        user.setRoles(Set.of(roleUser));
         roleUser.getUsers().add(user);
-        roleAnon.getUsers().add(user);
 
         userRepository.save(user);
     }
 
     @Transactional
     public void update(User user) {
-
-        user.setModificationDate(LocalDateTime.now());
 
         userRepository.save(user);
     }

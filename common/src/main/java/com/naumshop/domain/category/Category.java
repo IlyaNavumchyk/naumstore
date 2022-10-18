@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.naumshop.domain.product.Product;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +25,9 @@ import java.util.Set;
 @Entity
 @Table(name = "categories")
 @Data
+@EqualsAndHashCode(exclude = "products")
 @JsonIgnoreProperties("products")
+@Cacheable("categories")
 public class Category {
 
     @Id
@@ -43,7 +47,7 @@ public class Category {
     @JsonIgnore
     private LocalDateTime modificationDate;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Product> products;
 }
