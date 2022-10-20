@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ShopService {
+public class StoreService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;

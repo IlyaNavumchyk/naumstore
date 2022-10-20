@@ -3,7 +3,9 @@ package com.naumshop.domain.role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.naumshop.domain.user.User;
 import lombok.Data;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

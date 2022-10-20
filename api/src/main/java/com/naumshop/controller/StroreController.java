@@ -5,7 +5,7 @@ import com.naumshop.controller.request.SortingSettings;
 import com.naumshop.domain.category.ProductCategories;
 import com.naumshop.domain.product.Product;
 import com.naumshop.exception.NoSuchEntityException;
-import com.naumshop.service.ShopService;
+import com.naumshop.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ import static com.naumshop.controller.DefaultResponseTag.RESULT;
 
 @RestController
 @RequiredArgsConstructor
-public class ShopController {
+public class StroreController {
 
     private static final int DEFAULT_PAGE_NUMBER = 0;
 
@@ -32,7 +32,7 @@ public class ShopController {
 
     private static final String DEFAULT_SORT_FIELD = "price";
 
-    private final ShopService shopService;
+    private final StoreService shopService;
 
     @GetMapping
     public ResponseEntity<Object> findAllCategories() {

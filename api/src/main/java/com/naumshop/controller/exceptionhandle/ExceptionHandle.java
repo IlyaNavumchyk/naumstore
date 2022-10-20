@@ -1,6 +1,7 @@
 package com.naumshop.controller.exceptionhandle;
 
 import com.naumshop.exception.NoSuchEntityException;
+import com.naumshop.exception.SystemStoreWorkException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class ExceptionHandle {
         );
     }
 
-    @ExceptionHandler({NumberFormatException.class, IllegalArgumentException.class})
+    @ExceptionHandler({IllegalArgumentException.class, SystemStoreWorkException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(Exception e) {
 
         return new ResponseEntity<>(

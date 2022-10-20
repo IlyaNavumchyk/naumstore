@@ -40,11 +40,9 @@ public class Category {
     private ProductCategories categoryName;
 
     @Column(name = "creation_date")
-    @JsonIgnore
     private LocalDateTime creationDate;
 
     @Column(name = "modification_date")
-    @JsonIgnore
     private LocalDateTime modificationDate;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

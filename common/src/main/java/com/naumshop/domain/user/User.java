@@ -80,9 +80,9 @@ public class User {
     @JsonManagedReference
     private Set<Order> orders;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    /*@ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("users")
-    private Set<Product> favourites;
+    private Set<Product> favourites;*/
 
     @PrePersist
     public void prePersist() {
