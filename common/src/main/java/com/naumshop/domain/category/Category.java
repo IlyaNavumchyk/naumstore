@@ -1,6 +1,5 @@
 package com.naumshop.domain.category;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.naumshop.domain.product.Product;
@@ -33,7 +32,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "category_name")
     @Enumerated(value = EnumType.STRING)

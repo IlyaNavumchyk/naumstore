@@ -1,9 +1,9 @@
-package com.naumshop.controller.dto.user;
+package com.naumshop.controller.entity_request;
 
 import lombok.Data;
 
 @Data
-public class AddressDTO {
+public class AddressRequest {
 
     private String country;
 

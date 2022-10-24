@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class StoreService {
 
         Category category = categoryRepository.findByCategoryName(productCategory);
 
-        return productRepository.findAllByCategoryAndIsDeleted(category, false, pageable);
+        return productRepository.findAllByCategoryAndIsDeletedOrderByPriceAsc(category, false, pageable);
     }
 
     public Page<Product> searchByProductNameOrDescription(String productName, Pageable pageable) {

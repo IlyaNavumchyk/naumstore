@@ -1,12 +1,17 @@
 package com.naumshop.controller;
 
+import com.naumshop.controller.converters.CategoryMapper;
+import com.naumshop.controller.converters.ProductMapper;
 import com.naumshop.controller.request.PageSettings;
+import com.naumshop.controller.request.SortFields;
 import com.naumshop.controller.request.SortingSettings;
+import com.naumshop.domain.category.Category;
 import com.naumshop.domain.category.ProductCategories;
 import com.naumshop.domain.product.Product;
 import com.naumshop.exception.NoSuchEntityException;
 import com.naumshop.service.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,27 +23,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.List;
 
 import static com.naumshop.controller.DefaultResponseTag.PRODUCTS;
 import static com.naumshop.controller.DefaultResponseTag.RESULT;
 
 @RestController
 @RequiredArgsConstructor
-public class StroreController {
+public class StoreController {
 
     private static final int DEFAULT_PAGE_NUMBER = 0;
-
     private static final int DEFAULT_PAGE_SIZE = 10;
-
     private static final String DEFAULT_SORT_FIELD = "price";
 
     private final StoreService shopService;
+    private final CategoryMapper categoryMapper;
+    private final ProductMapper productMapper;
 
     @GetMapping
     public ResponseEntity<Object> findAllCategories() {
 
+        List<Category> allCategories = shopService.findAllCategories();
+
         return new ResponseEntity<>(
-                Collections.singletonMap(RESULT, shopService.findAllCategories()),
+                Collections.singletonMap(RESULT, categoryMapper.mapToResponse(allCategories)),
                 HttpStatus.OK
         );
     }
@@ -58,8 +66,10 @@ public class StroreController {
 
         Pageable pageable = getPageable(pageSettings, sortingSettings);
 
+        Page<Product> page = shopService.findAllProductsByCategoryName(productCategory, pageable);
+
         return new ResponseEntity<>(Collections.singletonMap(PRODUCTS,
-                shopService.findAllProductsByCategoryName(productCategory, pageable)),
+                page.map(productMapper::mapToResponse)),
                 HttpStatus.OK
         );
     }
@@ -71,8 +81,10 @@ public class StroreController {
 
         Pageable pageable = getPageable(pageSettings, sortingSettings);
 
+        Page<Product> page = shopService.searchByProductNameOrDescription(productName, pageable);
+
         return new ResponseEntity<>(
-                Collections.singletonMap(PRODUCTS, shopService.searchByProductNameOrDescription(productName, pageable)),
+                page.map(productMapper::mapToResponse),
                 HttpStatus.OK
         );
     }
@@ -105,7 +117,9 @@ public class StroreController {
         }
 
         sortField = sortingSettings.getSortField();
-        if (!checkField(sortField)) {
+        try {
+            SortFields.valueOf(sortField);
+        } catch (Exception e) {
             sortField = DEFAULT_SORT_FIELD;
         }
 
@@ -116,15 +130,5 @@ public class StroreController {
         }
 
         return PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
-    }
-
-    private boolean checkField(String fieldName) {
-
-        try {
-            Product.class.getDeclaredField(fieldName);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 }

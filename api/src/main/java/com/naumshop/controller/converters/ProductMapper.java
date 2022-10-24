@@ -1,18 +1,21 @@
 package com.naumshop.controller.converters;
 
-import com.naumshop.controller.dto.products.ProductDTO;
+import com.naumshop.controller.entity_request.ProductRequest;
+import com.naumshop.controller.response.ProductResponse;
 import com.naumshop.domain.product.Product;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper
+@Mapper(uses = CategoryMapper.class)
 public interface ProductMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Product mapForCreate(ProductDTO productDTO);
+    Product mapForCreate(ProductRequest productDTO);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void mapForUpdate(ProductDTO productDTO, @MappingTarget Product product);
+    void mapForUpdate(ProductRequest productDTO, @MappingTarget Product product);
+
+    ProductResponse mapToResponse(Product product);
 }

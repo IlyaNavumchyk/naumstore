@@ -23,7 +23,7 @@ public interface DefaultResponseTag {
     String PRODUCTS = "products";
 
     /**
-     This tag used when we transfer a order.
+     This tag used when we transfer an order.
      */
     String ORDER = "order";
 

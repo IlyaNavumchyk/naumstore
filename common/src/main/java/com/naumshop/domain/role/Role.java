@@ -3,9 +3,8 @@ package com.naumshop.domain.role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.naumshop.domain.user.User;
 import lombok.Data;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,13 +24,14 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 @Data
+@EqualsAndHashCode(exclude = {"users"})
 @JsonIgnoreProperties("users")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "role_name")
     @Enumerated(value = EnumType.STRING)

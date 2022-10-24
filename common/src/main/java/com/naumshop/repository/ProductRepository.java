@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Page<Product> findAllByCategoryAndIsDeleted(Category category, Boolean bool, Pageable pageable);
+    Page<Product> findAllByCategoryAndIsDeletedOrderByPriceAsc(Category category, Boolean bool, Pageable pageable);
 
     @Query(value = "select * from shop.products " +
             "where (product_name ilike '%'||:name||'%' or description ilike '%'||:name||'%') " +

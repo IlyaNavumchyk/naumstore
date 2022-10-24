@@ -23,7 +23,7 @@ public class UserService {
     private final RoleRepository roleRepository;
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderById();
     }
 
     public User findById(Long id) {
@@ -47,5 +47,15 @@ public class UserService {
     public void update(User user) {
 
         userRepository.save(user);
+    }
+
+    public User block(Long id, Boolean isDeleted) {
+
+        User user = findById(id);
+
+        user.setIsDeleted(isDeleted);
+        update(user);
+
+        return user;
     }
 }

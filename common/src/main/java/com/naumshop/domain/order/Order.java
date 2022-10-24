@@ -20,10 +20,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -61,7 +59,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     @JsonIgnoreProperties("order")
-    private Set<OrderProductLinkEntity> products = new HashSet<>();
+    private Set<OrderProductLinkEntity> products;
 
     @PrePersist
     public void prePersist() {

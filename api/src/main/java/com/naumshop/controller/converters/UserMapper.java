@@ -1,6 +1,7 @@
 package com.naumshop.controller.converters;
 
-import com.naumshop.controller.dto.user.UserDTO;
+import com.naumshop.controller.entity_request.UserRequest;
+import com.naumshop.controller.response.UserResponse;
 import com.naumshop.domain.user.User;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -10,20 +11,29 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-@Mapper
+@Mapper(uses = OrderMapper.class)
 public interface UserMapper {
-    @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User mapForCreate(UserDTO userDTO);
+
+    DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void mapForUpdate(UserDTO userDTO, @MappingTarget User user);
+    User mapToCreate(UserRequest userDTO);
+
+    @Mapping(target = "birth", expression = "java(parseToLocalDate(userDTO.getBirth()))")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mapToUpdate(UserRequest userDTO, @MappingTarget User user);
+
+    @Mapping(target = "birth", expression = "java(parseFromLocalDate(user.getBirth()))")
+    UserResponse mapToResponse(User user);
+
+    List<UserResponse> mapToResponse(List<User> user);
 
     default LocalDate parseToLocalDate(String birth) {
 
-        return LocalDate.parse(birth, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return LocalDate.parse(birth, DATE_TIME_FORMATTER);
     }
 
     default String parseFromLocalDate(LocalDate birth) {

@@ -1,8 +1,8 @@
 package com.naumshop.controller;
 
 import com.naumshop.controller.converters.ProductMapper;
-import com.naumshop.controller.dto.products.ProductDTO;
-import com.naumshop.controller.request.DeleteRequest;
+import com.naumshop.controller.entity_request.ProductRequest;
+import com.naumshop.controller.request.BlockRequest;
 import com.naumshop.domain.product.Product;
 import com.naumshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    private final ProductMapper mapper;
+    private final ProductMapper productMapper;
 
 
     @GetMapping("/{id}")
@@ -36,34 +36,36 @@ public class ProductController {
 
         Long productId = Long.parseLong(id);
 
+        Product product = productService.findById(productId);
+
         return new ResponseEntity<>(
-                Collections.singletonMap(PRODUCT, productService.findById(productId)),
+                Collections.singletonMap(PRODUCT, productMapper.mapToResponse(product)),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Object> add(@RequestBody ProductRequest productDTO) {
 
-        Product product = mapper.mapForCreate(productDTO);
+        Product product = productMapper.mapForCreate(productDTO);
 
         productService.create(product, productDTO.getCategoryId());
 
         return new ResponseEntity<>(
-                Collections.singletonMap(PRODUCT, product),
+                Collections.singletonMap(PRODUCT, productMapper.mapToResponse(product)),
                 HttpStatus.OK
         );
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") String id,
-                                         @RequestBody ProductDTO productDTO) {
+                                         @RequestBody ProductRequest productDTO) {
 
         long productId = Long.parseLong(id);
 
         Product product = productService.findById(productId);
 
-        mapper.mapForUpdate(productDTO, product);
+        productMapper.mapForUpdate(productDTO, product);
 
         boolean isCategoryChanged = product.getCategory().getId() != productDTO.getCategoryId();
 
@@ -74,17 +76,20 @@ public class ProductController {
         }
 
         return new ResponseEntity<>(
-                Collections.singletonMap(PRODUCT, product),
+                Collections.singletonMap(PRODUCT, productMapper.mapToResponse(product)),
                 HttpStatus.OK
         );
     }
 
+    /**
+     * This method need to blocks or software remove the product.
+     */
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id,
-                                         @RequestBody DeleteRequest isDel) {
+    public ResponseEntity<Object> block(@PathVariable("id") String id,
+                                        @RequestBody BlockRequest isBlocked) {
 
         long productId = Long.parseLong(id);
-        Boolean isDeleted = isDel.getIsDeleted();
+        Boolean isDeleted = isBlocked.getIsDeleted();
 
         Product product = productService.findById(productId);
         product.setIsDeleted(isDeleted);
@@ -92,7 +97,7 @@ public class ProductController {
         productService.update(product);
 
         return new ResponseEntity<>(
-                Collections.singletonMap(PRODUCT, product),
+                Collections.singletonMap(PRODUCT, productMapper.mapToResponse(product)),
                 HttpStatus.OK
         );
     }

@@ -1,11 +1,11 @@
-package com.naumshop.controller.dto.products;
+package com.naumshop.controller.entity_request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductRequest {
 
     private String name;
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.naumshop.domain.order.Order;
-import com.naumshop.domain.product.Product;
 import com.naumshop.domain.role.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,7 +30,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
-@EqualsAndHashCode(exclude = {"roles", "orders", "favourites"})
+@EqualsAndHashCode(exclude = {"roles", "orders"})
 public class User {
 
     @Id
@@ -79,10 +78,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Order> orders;
-
-    /*@ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("users")
-    private Set<Product> favourites;*/
 
     @PrePersist
     public void prePersist() {

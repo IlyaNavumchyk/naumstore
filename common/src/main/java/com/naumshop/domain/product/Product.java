@@ -64,13 +64,6 @@ public class Product {
     @JsonManagedReference
     private Set<OrderProductLinkEntity> orders;
 
-    /*@ManyToMany
-    @JoinTable(name = "l_user_product",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @JsonIgnoreProperties("favourites")
-    private Set<User> users;*/
-
     @PrePersist
     public void prePersist() {
         creationDate = LocalDateTime.now();
