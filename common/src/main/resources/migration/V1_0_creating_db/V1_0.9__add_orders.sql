@@ -3,8 +3,7 @@ create table if not exists orders
     id                bigserial primary key,
     user_id           bigint      not null
         constraint orders_users_id_fk
-            references users
-            on update cascade on delete cascade,
+            references users,
     status            varchar(20) not null,
     total_sale        int,
     constraint orders_total_sale_check_less_than_100 check (total_sale < 100),

@@ -1,5 +1,7 @@
-insert into roles (role_name, creation_date)
-values ('ROLE_USER', current_timestamp(6)),
-       ('ROLE_ADMIN', current_timestamp(6)),
-       ('ROLE_MODERATOR', current_timestamp(6)),
-       ('ROLE_ANONYMOUS', current_timestamp(6));
+insert into roles (role_name)
+values ('ROLE_USER'),
+       ('ROLE_ADMIN'),
+       ('ROLE_MODERATOR');
+
+update roles
+set creation_date = current_timestamp(6);

@@ -3,12 +3,10 @@ create table if not exists l_user_product
     id            bigserial primary key,
     user_id       bigint not null
         constraint l_user_product_users_id_fk
-            references users
-            on update cascade on delete cascade,
+            references users,
     product_id    int    not null
         constraint l_user_product_products_id_fk
-            references products
-            on update cascade on delete cascade,
+            references products,
     creation_date timestamp(6)
 );
 

@@ -1,14 +1,16 @@
 create table if not exists l_order_product
 (
     id            bigserial primary key,
-    order_id      bigint not null
+    order_id      bigint         not null
         constraint l_order_product_orders_id_fk
-            references orders
-            on update cascade on delete cascade,
-    product_id    int    not null
+            references orders,
+    product_id    int            not null
         constraint l_order_product_products_id_fk
-            references products
-            on update cascade on delete cascade,
+            references products,
+    product_count         int            not null,
+    constraint l_order_product_count_check_more_than_0 check ( product_count > 0 ),
+    product_price         numeric(10, 2) not null,
+    constraint l_order_product_price_check_more_than_0 check ( product_price > 0),
     creation_date timestamp(6)
 );
 
