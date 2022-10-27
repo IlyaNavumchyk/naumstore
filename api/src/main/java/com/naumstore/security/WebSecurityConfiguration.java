@@ -48,15 +48,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/actuator/**").permitAll()
-
-                .antMatchers("/rest/**").permitAll()
-                .antMatchers("/test/**").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers(HttpMethod.GET, "/", "/{category}", "/search").permitAll()
+                .antMatchers("/auth").permitAll()
+                .antMatchers("/actuator/**").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers(HttpMethod.POST, "/orders").permitAll()
+                .antMatchers(HttpMethod.GET, "/users").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers(HttpMethod.PATCH, "/users/{id}").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers("/users/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/products/{id}").permitAll()
+                .antMatchers("/products/**").hasAnyRole("ADMIN", "MODERATOR")
                 .anyRequest().authenticated();
 
         httpSecurity

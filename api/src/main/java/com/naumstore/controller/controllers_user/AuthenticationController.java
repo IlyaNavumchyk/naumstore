@@ -1,4 +1,4 @@
-package com.naumstore.controller;
+package com.naumstore.controller.controllers_user;
 
 import com.naumstore.controller.request.AuthRequest;
 import com.naumstore.controller.request.AuthResponse;

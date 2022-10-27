@@ -1,5 +1,6 @@
-package com.naumstore.controller;
+package com.naumstore.controller.controllers_admin;
 
+import com.naumstore.controller.DefaultResponseTag;
 import com.naumstore.controller.converter.ProductMapper;
 import com.naumstore.controller.entity_request.ProductRequest;
 import com.naumstore.controller.request.BlockRequest;
@@ -8,7 +9,6 @@ import com.naumstore.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,25 +23,11 @@ import java.util.Collections;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("products")
-public class ProductController {
+public class AdminProductController {
 
     private final ProductService productService;
 
     private final ProductMapper productMapper;
-
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable("id") String id) {
-
-        Long productId = Long.parseLong(id);
-
-        Product product = productService.findById(productId);
-
-        return new ResponseEntity<>(
-                Collections.singletonMap(DefaultResponseTag.PRODUCT, productMapper.mapToResponse(product)),
-                HttpStatus.OK
-        );
-    }
 
     @PostMapping
     public ResponseEntity<Object> add(@RequestBody @Valid ProductRequest productRequest) {

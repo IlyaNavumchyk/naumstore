@@ -18,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByCategoryAndIsDeleted(Category category, Boolean bool, Pageable pageable);
 
-    @Query(value = "select * from shop.products " +
+    @Query(value = "select * from store.products " +
             "where (product_name ilike '%'||:name||'%' or description ilike '%'||:name||'%') " +
             "and is_deleted = false", nativeQuery = true)
     Page<Product> searchByProductNameOrDescription(@Param("name") String name, Pageable pageable);

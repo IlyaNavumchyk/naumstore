@@ -1,4 +1,4 @@
-package com.naumstore.controller;
+package com.naumstore.controller.controllers_user;
 
 import com.naumstore.controller.converter.UserMapper;
 import com.naumstore.controller.entity_request.UserRequest;
@@ -45,17 +45,6 @@ public class UserController {
     private final UserMapper userMapper;
 
     private final BCryptPasswordEncoder passwordEncoder;
-
-    @GetMapping
-    public ResponseEntity<Object> findAll() {
-
-        List<User> users = userService.findAll();
-
-        return new ResponseEntity<>(
-                Collections.singletonMap(USERS, userMapper.mapToResponse(users)),
-                HttpStatus.OK
-        );
-    }
 
     @GetMapping("/{id}")
     @Operation(summary = "User info", parameters = {
@@ -119,24 +108,6 @@ public class UserController {
         } else {
             throw new ForbiddenException("No authority");
         }
-
-        return new ResponseEntity<>(
-                Collections.singletonMap(USER, userMapper.mapToResponse(user)),
-                HttpStatus.OK
-        );
-    }
-
-    /**
-     * This method need to blocks or software remove the user.
-     */
-    @PatchMapping("/{id}")
-    public ResponseEntity<Object> block(@PathVariable("id") String id,
-                                        @RequestBody BlockRequest request) {
-
-        long userId = Long.parseLong(id);
-        Boolean isDeleted = request.getIsDeleted();
-
-        User user = userService.block(userId, isDeleted);
 
         return new ResponseEntity<>(
                 Collections.singletonMap(USER, userMapper.mapToResponse(user)),

@@ -1,4 +1,4 @@
-package com.naumstore.controller;
+package com.naumstore.controller.controllers_user;
 
 import com.naumstore.controller.converter.OrderMapper;
 import com.naumstore.controller.entity_request.OrderProductLinkEntityRequest;
@@ -7,6 +7,7 @@ import com.naumstore.domain.order.Order;
 import com.naumstore.domain.order.OrderProductLinkEntity;
 import com.naumstore.domain.product.Product;
 import com.naumstore.domain.user.User;
+import com.naumstore.exception.ForbiddenException;
 import com.naumstore.exception.SystemStoreWorkException;
 import com.naumstore.service.OrderService;
 import com.naumstore.service.ProductService;
@@ -16,12 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,14 +40,19 @@ public class OrderController {
 
     private final OrderMapper orderMapper;
 
-    @PostMapping("/{id}/orders")
+    @PostMapping("/orders")
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
-    public ResponseEntity<Object> addOrder(@PathVariable("id") String id,
-                                           @RequestBody @Valid OrderRequest orderRequest) {
+    public ResponseEntity<Object> addOrder(@RequestBody @Valid OrderRequest orderRequest,
+                                           Principal principal) {
 
-        long userId = Long.parseLong(id);
+        if (principal == null) {
 
-        User user = userService.findById(userId);
+            throw new ForbiddenException("Only registered users can shopping");
+        }
+
+        String userLogin = principal.getName();
+
+        User user = userService.findByLogin(userLogin);
 
         Order order = new Order();
         order.setUser(user);

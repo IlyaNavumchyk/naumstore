@@ -11,10 +11,18 @@ public class UserMapperUtil {
 
     public static LocalDate parseToLocalDate(String birth) {
 
+        if (birth == null) {
+            return null;
+        }
+
         return LocalDate.parse(birth, DATE_TIME_FORMATTER);
     }
 
     public static String parseFromLocalDate(LocalDate birth) {
+
+        if (birth == null) {
+            return null;
+        }
 
         // yyyy-MM-dd
         String[] args = birth.toString().split("-");
@@ -24,6 +32,10 @@ public class UserMapperUtil {
     }
 
     public static Gender getGender(String gender) {
+
+        if (gender == null) {
+            return null;
+        }
 
         return Gender.valueOf(gender.toUpperCase());
     }

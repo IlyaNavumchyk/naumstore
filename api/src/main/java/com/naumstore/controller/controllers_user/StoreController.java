@@ -1,4 +1,4 @@
-package com.naumstore.controller;
+package com.naumstore.controller.controllers_user;
 
 import com.naumstore.controller.converter.CategoryMapper;
 import com.naumstore.controller.converter.ProductMapper;
@@ -11,7 +11,6 @@ import com.naumstore.domain.product.Product;
 import com.naumstore.exception.NoSuchEntityException;
 import com.naumstore.service.StoreService;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
