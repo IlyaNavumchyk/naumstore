@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Login user in system", description = "Return Auth-Token with user login")
     @PostMapping
-    public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody @Valid AuthRequest request) {
 
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

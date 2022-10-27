@@ -3,7 +3,7 @@ package com.naumstore.controller.controllers_user;
 import com.naumstore.controller.converter.UserMapper;
 import com.naumstore.controller.entity_request.UserRequest;
 import com.naumstore.controller.entity_response.UserResponse;
-import com.naumstore.controller.request.BlockRequest;
+import com.naumstore.controller.util.UserBirthUtil;
 import com.naumstore.domain.role.UserRoles;
 import com.naumstore.domain.user.User;
 import com.naumstore.exception.ForbiddenException;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static com.naumstore.controller.DefaultResponseTag.USER;
@@ -78,6 +77,8 @@ public class UserController {
 
         User user = userMapper.mapToCreate(userRequest);
 
+        checkUserBirth(user);
+
         user.getCredentials().setPassword(passwordEncoder.encode(userRequest.getCredentials().getPassword()));
 
         userService.create(user);
@@ -103,6 +104,8 @@ public class UserController {
 
         userMapper.mapToUpdate(userRequest, user);
 
+        checkUserBirth(user);
+
         if (checkAuthority(user, principal)) {
             userService.update(user);
         } else {
@@ -122,5 +125,20 @@ public class UserController {
                     (PrincipalUtil.isUserHaveAuthority(principal, UserRoles.ROLE_MODERATOR, UserRoles.ROLE_ADMIN));
         }
         return false;
+    }
+
+    private void checkUserBirth(User user) {
+
+        LocalDate birth = user.getBirth();
+
+        if (birth == null) {
+            return;
+        }
+
+        if (!UserBirthUtil.isValidBirth(birth)) {
+
+            throw new IllegalArgumentException("User birth must be later 1900 " +
+                    "and user must be over 18 years old");
+        }
     }
 }

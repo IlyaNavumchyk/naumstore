@@ -1,6 +1,7 @@
 package com.naumstore.controller.exceptionhandle;
 
 import com.naumstore.exception.EntityAlreadyExsistException;
+import com.naumstore.exception.ForbiddenException;
 import com.naumstore.exception.NoSuchEntityException;
 import com.naumstore.exception.SystemStoreWorkException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,7 +44,7 @@ public class ExceptionHandle {
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-        ErrorContainer errorContainer = composeErrorContainer(e, 10);
+        ErrorContainer errorContainer = composeErrorContainer(e, 4);
 
         StringBuilder sb = new StringBuilder();
         for (ObjectError error : e.getBindingResult().getAllErrors()) {
@@ -57,11 +58,22 @@ public class ExceptionHandle {
         );
     }
 
+    @ExceptionHandler({ForbiddenException.class})
+    public ResponseEntity<Object> handleForbiddenException(ForbiddenException e) {
+
+        ErrorContainer errorContainer = composeErrorContainer(e, 5);
+
+        return new ResponseEntity<>(
+                Collections.singletonMap(ERROR, errorContainer),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
     @ExceptionHandler({DataIntegrityViolationException.class, SystemStoreWorkException.class})
     public ResponseEntity<Object> handleDataIntegrityViolationException(Exception e) {
 
         return new ResponseEntity<>(
-                Collections.singletonMap(ERROR, composeErrorContainer(e, 4)),
+                Collections.singletonMap(ERROR, composeErrorContainer(e, 10)),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

@@ -1,4 +1,4 @@
-package com.naumstore.controller.converter.util;
+package com.naumstore.controller.util;
 
 import com.naumstore.domain.user.Gender;
 

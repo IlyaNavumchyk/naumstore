@@ -9,9 +9,9 @@ create table if not exists products
             references categories,
     description       text,
     price             decimal(10, 2) not null,
-    constraint products_price_check_more_than_0 check (price > 0),
+    constraint products_price_check_more_than_0 check (price >= 0.01),
     count             int            not null,
-    constraint products_count_check_non_negative check (count > -1),
+    constraint products_count_check_non_than_0 check (count > 0),
     is_deleted        boolean,
     creation_date     timestamp(6),
     modification_date timestamp(6)

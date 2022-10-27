@@ -10,6 +10,7 @@ import com.naumstore.domain.category.ProductCategories;
 import com.naumstore.domain.product.Product;
 import com.naumstore.exception.NoSuchEntityException;
 import com.naumstore.service.StoreService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class StoreController {
     private final CategoryMapper categoryMapper;
     private final ProductMapper productMapper;
 
+    @Operation(summary = "Start page", description = "Return list of product categories")
     @GetMapping
     public ResponseEntity<Object> findAllCategories() {
 
@@ -53,6 +55,7 @@ public class StoreController {
         );
     }
 
+    @Operation(summary = "Find products by category", description = "Return page of product in category")
     @GetMapping("/{category}")
     public ResponseEntity<Object> findAllProductsByCategoryName(@PathVariable("category") @Schema(defaultValue = "HOME_APPLIANCES") String categoryName,
                                                                 @ModelAttribute @Parameter(description = "page param") PageSettings pageSettings,
@@ -76,6 +79,7 @@ public class StoreController {
         );
     }
 
+    @Operation(summary = "Find products by name or description", description = "Return page of finding result")
     @GetMapping("/search")
     public ResponseEntity<Object> searchByProductName(@ModelAttribute("q") String productName,
                                                       @ModelAttribute PageSettings pageSettings,

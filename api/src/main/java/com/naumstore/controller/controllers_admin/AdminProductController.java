@@ -44,7 +44,7 @@ public class AdminProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") String id,
-                                         @RequestBody ProductRequest productRequest) {
+                                         @RequestBody @Valid ProductRequest productRequest) {
 
         long productId = Long.parseLong(id);
 

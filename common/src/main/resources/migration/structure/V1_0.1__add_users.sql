@@ -1,7 +1,7 @@
 create table if not exists users
 (
     id                bigserial primary key,
-    user_login        varchar(50)  not null
+    user_login        varchar(20)  not null
         unique,
     constraint users_user_login_check_length_more_than_3 check (length(user_login) > 3),
     user_password     varchar(255) not null,

@@ -16,25 +16,25 @@ import java.util.List;
 public interface UserMapper {
 
     @Mapping(target = "birth", expression =
-            "java(com.naumstore.controller.converter.util.UserMapperUtil.parseToLocalDate(userRequest.getBirth()))")
+            "java(com.naumstore.controller.util.UserMapperUtil.parseToLocalDate(userRequest.getBirth()))")
     @Mapping(target = "gender", expression =
-            "java(com.naumstore.controller.converter.util.UserMapperUtil.getGender(userRequest.getGender()))")
+            "java(com.naumstore.controller.util.UserMapperUtil.getGender(userRequest.getGender()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User mapToCreate(UserRequest userRequest);
 
     @Mapping(target = "birth", expression =
-            "java(com.naumstore.controller.converter.util.UserMapperUtil.parseToLocalDate(userRequest.getBirth()))")
+            "java(com.naumstore.controller.util.UserMapperUtil.parseToLocalDate(userRequest.getBirth()))")
     @Mapping(target = "gender", expression =
-            "java(com.naumstore.controller.converter.util.UserMapperUtil.getGender(userRequest.getGender()))")
+            "java(com.naumstore.controller.util.UserMapperUtil.getGender(userRequest.getGender()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void mapToUpdate(UserRequest userRequest, @MappingTarget User user);
 
     @Mapping(target = "birth", expression =
-            "java(com.naumstore.controller.converter.util.UserMapperUtil.parseFromLocalDate(user.getBirth()))")
+            "java(com.naumstore.controller.util.UserMapperUtil.parseFromLocalDate(user.getBirth()))")
     UserResponse mapToResponse(User user);
 
     @Mapping(target = "birth", expression =
-            "java(com.naumstore.controller.converter.util.UserMapperUtil.parseFromLocalDate(user.getBirth()))")
+            "java(com.naumstore.controller.util.UserMapperUtil.parseFromLocalDate(user.getBirth()))")
     UserDefaultResponse mapToDefaultResponse(User user);
 
     List<UserResponse> mapToResponse(List<User> user);

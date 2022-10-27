@@ -12,6 +12,7 @@ import com.naumstore.exception.SystemStoreWorkException;
 import com.naumstore.service.OrderService;
 import com.naumstore.service.ProductService;
 import com.naumstore.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +41,16 @@ public class OrderController {
 
     private final OrderMapper orderMapper;
 
+    @Operation(summary = "Create new order", description = "Return created order")
     @PostMapping("/orders")
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
+
     public ResponseEntity<Object> addOrder(@RequestBody @Valid OrderRequest orderRequest,
                                            Principal principal) {
 
         if (principal == null) {
 
-            throw new ForbiddenException("Only registered users can shopping");
+            throw new ForbiddenException("Only registered users can be shopping");
         }
 
         String userLogin = principal.getName();
