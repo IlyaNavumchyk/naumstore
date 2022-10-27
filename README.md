@@ -16,6 +16,9 @@ MapStruct
 DB:
 PostgreSQL
 
+API description:
+Springdoc OpenAPI
+
 Git:
 GitHub 😄
 
