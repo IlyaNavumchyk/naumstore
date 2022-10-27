@@ -3,6 +3,7 @@ create table if not exists products
     id                serial PRIMARY KEY,
     product_name      varchar(50)    not null
         unique,
+    constraint products_product_name_check_length_more_than_4 check ( length(product_name) > 4 ),
     category_id       int            not null
         constraint products_categories_id_fk
             references categories,

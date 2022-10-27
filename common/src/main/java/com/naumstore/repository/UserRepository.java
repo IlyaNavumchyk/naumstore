@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByOrderById();
 
-    @Query(value = "select u from User u left join fetch u.roles where u.id = :id")
-    Optional<User> findByIdd(@Param("id") Long id);
+    Optional<User> findByCredentialsLogin(String login);
+
+    Optional<User> findByCredentialsEmail(String email);
 }

@@ -1,11 +1,13 @@
 package com.naumstore.controller.entity_request;
 
-import com.naumstore.domain.user.Gender;
 import lombok.Data;
+
+import javax.validation.Valid;
 
 @Data
 public class UserRequest {
 
+    @Valid
     private CredentialsRequest credentials;
 
     private String name;
@@ -16,7 +18,8 @@ public class UserRequest {
 
     private String birth;
 
-    private Gender gender;
+    private String gender;
 
+    @Valid
     private AddressRequest address;
 }

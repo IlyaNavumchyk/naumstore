@@ -7,7 +7,6 @@ import com.naumstore.domain.order.OrderProductLinkEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

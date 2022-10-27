@@ -10,6 +10,9 @@ import com.naumstore.domain.category.ProductCategories;
 import com.naumstore.domain.product.Product;
 import com.naumstore.exception.NoSuchEntityException;
 import com.naumstore.service.StoreService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,9 +55,9 @@ public class StoreController {
     }
 
     @GetMapping("/{category}")
-    public ResponseEntity<Object> findAllProductsByCategoryName(@PathVariable("category") String categoryName,
-                                                                @ModelAttribute PageSettings pageSettings,
-                                                                @ModelAttribute SortingSettings sortingSettings) {
+    public ResponseEntity<Object> findAllProductsByCategoryName(@PathVariable("category") @Schema(defaultValue = "HOME_APPLIANCES") String categoryName,
+                                                                @ModelAttribute @Parameter(description = "page param") PageSettings pageSettings,
+                                                                @ModelAttribute @Parameter(description = "sorting param") SortingSettings sortingSettings) {
 
         ProductCategories productCategory;
 
@@ -118,7 +121,7 @@ public class StoreController {
 
         sortField = sortingSettings.getSortField();
         try {
-            SortFields.valueOf(sortField);
+            SortFields.valueOf(sortField.toUpperCase());
         } catch (Exception e) {
             sortField = DEFAULT_SORT_FIELD;
         }
@@ -128,6 +131,8 @@ public class StoreController {
         } catch (Exception e) {
             sortDirection = Sort.DEFAULT_DIRECTION;
         }
+
+        System.out.println("" + pageNumber + pageSize + sortDirection + sortField);
 
         return PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
     }

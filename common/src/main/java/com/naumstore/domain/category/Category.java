@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.cache.annotation.Cacheable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -44,7 +43,7 @@ public class Category {
     @Column(name = "modification_date")
     private LocalDateTime modificationDate;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Product> products;
 }

@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,9 +29,10 @@ public class StoreService {
 
     public Page<Product> findAllProductsByCategoryName(ProductCategories productCategory, Pageable pageable) {
 
-        Category category = categoryRepository.findByCategoryName(productCategory);
+        Category category = categoryRepository.findByCategoryName(productCategory).orElseThrow(() ->
+                new NoSuchEntityException(String.format("Category with this name \"%s\" not found", productCategory)));
 
-        return productRepository.findAllByCategoryAndIsDeletedOrderByPriceAsc(category, false, pageable);
+        return productRepository.findAllByCategoryAndIsDeleted(category, false, pageable);
     }
 
     public Page<Product> searchByProductNameOrDescription(String productName, Pageable pageable) {

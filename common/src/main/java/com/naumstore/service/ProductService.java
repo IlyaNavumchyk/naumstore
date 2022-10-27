@@ -2,12 +2,15 @@ package com.naumstore.service;
 
 import com.naumstore.domain.category.Category;
 import com.naumstore.domain.product.Product;
+import com.naumstore.exception.EntityAlreadyExsistException;
 import com.naumstore.exception.NoSuchEntityException;
 import com.naumstore.repository.CategoryRepository;
 import com.naumstore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,18 +30,24 @@ public class ProductService {
     @Transactional
     public void create(Product product, int productCategoryId) {
 
-        Category category = categoryRepository.findById(productCategoryId).orElseThrow(() ->
-                new NoSuchEntityException(String.format("Category with this id \"%d\" not found", productCategoryId)));
+        if (checkProductNameForNotExistInDB(product)) {
 
-        product.setCategory(category);
+            Category category = categoryRepository.findById(productCategoryId).orElseThrow(() ->
+                    new NoSuchEntityException(String.format("Category with this id \"%d\" not found", productCategoryId)));
 
-        productRepository.save(product);
+            product.setCategory(category);
+
+            productRepository.save(product);
+        }
     }
 
     @Transactional
     public void update(Product product) {
 
-        productRepository.save(product);
+        if (checkProductNameForNotExistInDB(product)) {
+
+            productRepository.save(product);
+        }
     }
 
     @Transactional
@@ -50,5 +59,23 @@ public class ProductService {
         update(product);
 
         return product;
+    }
+
+    private boolean checkProductNameForNotExistInDB(Product product) {
+
+        String productName = product.getName();
+        Optional<Product> productByName = productRepository.findAllByName(productName);
+
+        if (productByName.isPresent() && checkProductsIdForMismatch(productByName.get(), product)) {
+            throw new EntityAlreadyExsistException(
+                    String.format("Product with this name \"%s\" already exists", productName));
+        }
+
+        return true;
+    }
+
+    private boolean checkProductsIdForMismatch(Product product1, Product product2) {
+
+        return !product1.getId().equals(product2.getId());
     }
 }

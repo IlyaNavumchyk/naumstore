@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Collections;
 
 @RestController
@@ -43,7 +44,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<Object> add(@RequestBody @Valid ProductRequest productRequest) {
 
         Product product = productMapper.mapForCreate(productRequest);
 

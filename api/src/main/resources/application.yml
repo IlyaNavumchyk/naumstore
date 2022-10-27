@@ -35,9 +35,9 @@ management:
 
 jwt:
   secret: naumstore*naumstore#naumstore_0123
-  expiration: 600
+  expiration: 60000000
 
----
-
-default-system-timezone:
-  timezone: UTC
+contact:
+  name : Navumchyk Ilya
+  email : dnaum.st.123@gmail.com
+  url : https://github.com/IlyaNavumchyk/naumstore

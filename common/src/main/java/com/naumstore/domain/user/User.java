@@ -7,6 +7,7 @@ import com.naumstore.domain.order.Order;
 import com.naumstore.domain.role.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -75,7 +76,7 @@ public class User {
     @JsonIgnoreProperties("users")
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Order> orders;
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class OrderController {
     @PostMapping("/{id}/orders")
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public ResponseEntity<Object> addOrder(@PathVariable("id") String id,
-                                           @RequestBody OrderRequest orderRequest) {
+                                           @RequestBody @Valid OrderRequest orderRequest) {
 
         long userId = Long.parseLong(id);
 
