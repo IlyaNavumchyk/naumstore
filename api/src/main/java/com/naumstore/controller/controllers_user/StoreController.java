@@ -135,8 +135,6 @@ public class StoreController {
             sortDirection = Sort.DEFAULT_DIRECTION;
         }
 
-        System.out.println("" + pageNumber + pageSize + sortDirection + sortField);
-
         return PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
     }
 }

@@ -5,7 +5,6 @@ import com.naumstore.controller.converter.ProductMapper;
 import com.naumstore.domain.product.Product;
 import com.naumstore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

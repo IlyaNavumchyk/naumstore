@@ -4,8 +4,6 @@ import com.naumstore.controller.request.AuthRequest;
 import com.naumstore.controller.request.AuthResponse;
 import com.naumstore.security.jwt.JwtTokenHelper;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
 

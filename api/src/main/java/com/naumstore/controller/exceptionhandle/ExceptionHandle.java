@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static com.naumstore.util.UUIDGenerator.generateUUID;
@@ -91,6 +92,7 @@ public class ExceptionHandle {
 
         return ErrorContainer.builder()
                 .exceptionId(generateUUID())
+                .timestamp(LocalDateTime.now())
                 .errorCode(errorCode)
                 .clazz(e.getClass().getSimpleName())
                 .message(e.getMessage())

@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 
 public class UserMapperUtil {
 
+    private UserMapperUtil() {
+    }
+
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static LocalDate parseToLocalDate(String birth) {

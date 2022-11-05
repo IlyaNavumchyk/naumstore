@@ -6,6 +6,10 @@ import com.naumstore.controller.entity_request.ProductRequest;
 import com.naumstore.controller.request.BlockRequest;
 import com.naumstore.domain.product.Product;
 import com.naumstore.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,10 @@ public class AdminProductController {
     private final ProductMapper productMapper;
 
     @PostMapping
+    @Operation(summary = "Create product", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     public ResponseEntity<Object> add(@RequestBody @Valid ProductRequest productRequest) {
 
         Product product = productMapper.mapForCreate(productRequest);
