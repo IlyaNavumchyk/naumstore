@@ -51,6 +51,10 @@ public class AdminProductController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update product", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     public ResponseEntity<Object> update(@PathVariable("id") String id,
                                          @RequestBody @Valid ProductRequest productRequest) {
 
@@ -78,6 +82,10 @@ public class AdminProductController {
      * This method need to blocks or software remove the product.
      */
     @PatchMapping("/{id}")
+    @Operation(summary = "Block product", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     public ResponseEntity<Object> block(@PathVariable("id") String id,
                                         @RequestBody BlockRequest request) {
 

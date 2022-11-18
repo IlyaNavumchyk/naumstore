@@ -4,6 +4,10 @@ import com.naumstore.controller.converter.UserMapper;
 import com.naumstore.controller.request.BlockRequest;
 import com.naumstore.domain.user.User;
 import com.naumstore.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,10 @@ public class AdminUserController {
     private final UserMapper userMapper;
 
     @GetMapping
+    @Operation(summary = "Find all users", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     public ResponseEntity<Object> findAll() {
 
         List<User> users = userService.findAll();
@@ -44,6 +52,10 @@ public class AdminUserController {
      * This method need to blocks or software remove the user.
      */
     @PatchMapping("/{id}")
+    @Operation(summary = "Block user", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     public ResponseEntity<Object> block(@PathVariable("id") String id,
                                         @RequestBody BlockRequest request) {
 
